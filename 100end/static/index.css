@@ -1,0 +1,67 @@
+.container{
+    margin: 80px auto;
+    background-color: #a4c58d;
+    max-width: 600px;
+    padding : 30px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    /* 반응형 애니메이션 효과 추가 */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 3s ease forwards;
+}
+
+/* 애니메이션 키프레임 정의 */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container img {
+      max-width: 100%;   /* 부모 너비에 맞게 축소 */
+      height: auto;      /* 비율 유지하면서 높이 자동 조정 */
+      display: block;    /* 불필요한 아래 공백 제거 */
+    }
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #000000;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    font-size: large;
+}
+
+a:hover{
+    color: #0056b3;
+}
+
+img {
+    border: 50%;
+    margin : 20px 0;
+    object-fit : cover; /* 이미지 비율 유지 */
+    /* 중간 정렬 */
+    display: block;
+    /* 위아래 20px, 좌우 자동 → 가운데 정렬 */
+    margin: 20px auto;          
+}
+
+/* 반응형 - 화면 너비가 768이하일때만 적용*/
+@media(max-width:768px){
+    .container {
+        margin: 40px 20px;
+        padding: 20px;
+    }
+}

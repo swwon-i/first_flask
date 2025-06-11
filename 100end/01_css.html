@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css 적용방식</title>
+</head>
+<body>
+    <h2>
+        <p>스타일 적용 순서는 인라인 -> 내부 -> 외부 </p>
+    </h2>
+
+    <!-- 인라인 스타일 ( 태그 안에 직접 적용 ) -->
+    <p style="color: red;">인라인 스타일</p>
+    <p>인라인 스타일</p>
+
+    <!-- 내부 스타일  -->
+    <style>
+        h5 {color: blue;}
+    </style>
+    <h5>내부 스타일</h5>
+    <h5>내부 스타일</h5>
+    <h5 style="color: red;">내부 스타일</h5>
+
+    <!-- 외부 스타일 -->
+    <link rel="stylesheet" href="style.css">
+
+</body>
+</html>
