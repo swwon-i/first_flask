@@ -27,11 +27,12 @@ def contact():
         mail = request.form.get('email')
         message = request.form.get('message')
         print(name, mail, message)
-        
+
         # 그냥 패턴 readme 참조
         # return render_template('contact.html', success=True)
         
         # PRG 패턴
+        ## readme 참조
         session['success'] = True
         return redirect(url_for('contact'))
     
