@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABout</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+{% extends "base.html" %}
 
-</head>
-<body>
-    <div class="container">
-        <h1>소개 페이지</h1>
-        <p>저는 인공지는 개발자입니다. 100End 배우는 중이에요</p>
-        <p>
-            <a href="/">홈으로</a> | <a href="/projects">프로젝트</a>
-        </p>
-    </div>
-</body>
-</html>
+{% block title %} 소개 {% endblock %}
+
+{% block content %} 
+    <h1>소개 페이지</h1>
+        <p>저는 인공지능 개발자입니다. 100End 배우는 중이에요</p>
+        <p> <a href="/">홈으로</a> | <a href="/projects">프로젝트</a> </p>
+{% endblock %}
