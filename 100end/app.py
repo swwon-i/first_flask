@@ -1,3 +1,4 @@
+import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, session
 
 # 객체 생성
@@ -18,6 +19,16 @@ def about():
 def projects():
     return render_template('projects.html')
 
+def save_message(name, email, message):
+    conn = sqlite3.connect('contact.db')
+    c = conn.cursor()
+    c.execute("""
+            insert into messages(name, email, message)
+            values(?,?,?)
+            """, (name, email, message))
+    conn.commit()
+    conn.close()
+
 # GET : 초기에 경로로 들어가면 작성 폼을 보여주자
 # POST : 입력받은 폼 가지고 뭔가를 보여주자
 @app.route('/contact', methods=['GET', 'POST'])
@@ -26,7 +37,8 @@ def contact():
         name = request.form.get('name')
         mail = request.form.get('email')
         message = request.form.get('message')
-        print(name, mail, message)
+        
+        save_message(name, mail, message)
 
         # 그냥 패턴 readme 참조
         # return render_template('contact.html', success=True)
