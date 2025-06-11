@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROJ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">    
 </head>
 <body>
-    
+    <div class="container">
+        <h1>진행한 프로젝트</h1>
+        <ul>
+            <li><a href="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-1ST-4TEAM"> 분석 및 시각화 </a></li>
+            <li><a href="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-2ND-6TEAM">머신 러닝 / 딥러닝 예측 모델</a></li>
+            <li><a href="https://github.com/SKNETWORKS-FAMILY-AICAMP/SKN12-3RD-4TEAM">기업 문석 기반 RAG 이용 LLM 모델</a></li>
+        </ul>
+        <p>
+            <a href="/">홈으로</a> | <a href="/about">소개</a>
+        </p>
+    </div>
 </body>
 </html>
