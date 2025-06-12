@@ -7,7 +7,7 @@ DATABASE_URL = 'sqlite:///./database.db'
 engine = create_engine(DATABASE_URL, connect_args={'check_same_thread' : False})
 
 # 세션을 생성하는 함수,, 요청할 때마다 세션을 만들어서 사용
-SeesionLocal = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine)
 
 # 클래스를 정의할 때마다 사용하는 베이스 클래스
 Base = declarative_base()
