@@ -6,6 +6,7 @@ from database import SessionLocal, engine
 from schemas import *
 from typing import List
 from fastapi import Query
+from fastapi.staticfiles import StaticFiles
 
 # fastapi 생성
 app = FastAPI()
@@ -19,6 +20,7 @@ def get_db():
         yield db # 종속된 함수에 세션 주입
     finally:
         db.close()
+
 
 # 라우터 ( 요청에 응답하는 )
 @app.post('/api/register')
@@ -123,3 +125,6 @@ def get_orders(user_id: int = Query(...), db:Session=Depends(get_db)):
     orders = db.query(Order).filter(Order.user_id == user_id).all()
     
     return orders
+
+# 정적 HTML 파일 서빙
+app.mount("/", StaticFiles(directory="templates", html=True), name="static")

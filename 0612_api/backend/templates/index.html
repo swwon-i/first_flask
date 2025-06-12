@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사러가 쇼핑</title>
+    <script>
+        async function loadProduct() {
+                const res = await fetch("/api/product");
+                const product =  res.json();   
+                const list = document.getElementById("product-list"); // id가 "product-list"인 놈을 객체로 저장 / tag = 'ul'
+                list.innerHTML = '';
+                
+                // for element in product:
+                    // ~
+                product.forEach(element => {
+                    const li = document.createElement('li')
+                    li.textContent = `${element.name} - ${element.price}원`
+                    list.appendChild(li)
+                });
+                // 그니까 뭔데
+                // 특정한 개체를 받아옴. 이름은 list
+                    // 이 개체는 ul 태그이고 ul개체 안에는 li이 있을 수 있음
+                // 그 개체 안에 뭔가를 채울거임
+                    // li 태그를 만들어서 넣을거임
+                    // li 텍스트는 ``로 채워서 넣음
+                    // list에 li을 추가
+        }
+        window.onload = loadProduct;
+    </script>
+</head>
+<body>
+    <h1>쇼핑몰 메인</h1>
+    <nav>
+        <a href="/register.html"> 회원 가입 </a> | <a href="/login.html"> 로그인 </a>
+    </nav>
+    <h2>상품 목록</h2>
+    <ul id="'product-list">
+        
+    </ul>
+</body>
+</html>
