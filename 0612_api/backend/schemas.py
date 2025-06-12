@@ -1,6 +1,12 @@
 # 요청 / 응답 모델 정의
 from pydantic import BaseModel
 
+# 회원 가입용 데이타타입 pydantic
+class RegisterRequest(BaseModel):
+    username : str
+    email : str
+    password : str
+
 class UserCreate(BaseModel):
     username : str
     password : str

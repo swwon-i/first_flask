@@ -20,12 +20,6 @@ def get_db():
     finally:
         db.close()
 
-# 회원 가입용 데이타타입 pydantic
-class RegisterRequest(BaseModel):
-    username : str
-    email : str
-    password : str
-
 # 라우터 ( 요청에 응답하는 )
 @app.post('/api/register')
 def register_user(user : RegisterRequest, db : Session=Depends(get_db)):
@@ -87,7 +81,7 @@ def add_to_cart(item: CartItem, db: Session = Depends(get_db)):
     return {"success" : True, 'message' : '장바구니!', 'cart_id' : cart.id}
 
 # 장바구니 조회
-@app.get('/api/cart?user_id={user_id}')
+@app.get('/api/cart')
 def show_cart(db: Session=Depends(get_db), user_id: int = Query(...)):
     cart = db.query(Cart).filter(Cart.user_id == user_id).all()
 
