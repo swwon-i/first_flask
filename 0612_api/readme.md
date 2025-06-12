@@ -11,3 +11,10 @@
 | 장바구니 조회  | GET    | /api/cart?user_id=           | 특정 사용자의 장바구니 조회   |
 | 주문 요청      | POST   | /api/order                   | 장바구니 상품 주문 처리       |
 | 주문 목록 조회 | GET    | /api/order?user_id=          | 사용자 주문 내역 조회         |
+
+
+## 진행 순서
+1. FAST API 설치
+```
+pip install fastapi uvicorn sqlalchemy
+```
