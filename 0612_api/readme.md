@@ -13,8 +13,16 @@
 | 주문 목록 조회 | GET    | /api/order?user_id=          | 사용자 주문 내역 조회         |
 
 
-## 진행 순서
-1. FAST API 설치
+## FAST API 설치
 ```
 pip install fastapi uvicorn sqlalchemy
+```
+
+## 통신 규칙
+```
+통신    json 포맷
+인증    쿠키, 세션 대신 단순 로그인 응답으로 user_id 유지 ( js 변수에 저장 )
+응답    {success : True, data : ,,} 형식
+에러    {success : False, error : ',,'} 형식
+
 ```

@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from model import Base, User
+from model import *
 from database import SessionLocal, engine
-from schemas import UserCreate, UserResponse
+from schemas import *
+from typing import List
 
 # fastapi 생성
 app = FastAPI()
@@ -48,11 +49,45 @@ def register_user(user : RegisterRequest, db : Session=Depends(get_db)):
 
     return {"success" : True, 'message' : '회원가입 성공!', 'user_id' : new_user.id}
 
+# 로그인
+## 사용자 정보 UserCreate로 DB 조회회
 @app.post('/api/login')
 def login(user:UserCreate, db:Session=Depends(get_db)):
     # 사용자 테이블에서 입력한 이름과 패스워드가 있는지 조회
-    found = db.query(User).filter(User.username == user.username, User.password == user.password)
+    found = db.query(User).filter(User.username == user.username, User.password == user.password).first()
     if not found:
         raise HTTPException(status_code=400, detail='로그인 실패.')
     
     return {"success" : True, 'message' : '로그인 성공!'}
+
+# 사용자 조회
+## 사용자 고유 id로 user테이블에서 사용자 조회
+@app.get('/api/users/{user_id}', response_model=UserResponse)
+def get_user(user_id:int, db:Session=Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail='사용자를 조회할 수 없습니다.')
+    
+    return user
+
+# 전체 상품 조회
+@app.get('/api/products', response_model=List[ProductOut])
+def get_product():
+    db = SessionLocal()
+    products = db.query(Product).all()
+    db.close()
+
+    return products
+
+# 전체 상품 등록
+@app.post('/api/products')
+def create_product(product: ProductCreate):
+    db = SessionLocal()
+    product = Product(name=product.name, price=product.price)
+
+    db.add(product)
+    db.commit()
+    db.refresh(product)
+    db.close()
+
+    return {"success" : True, 'message' : '상품 등록 성공!', 'product_id' : product.id}
