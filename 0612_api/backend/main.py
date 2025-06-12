@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from model import Base, User
 from database import SessionLocal, engine
+from schemas import UserCreate, UserResponse
 
 # fastapi 생성
 app = FastAPI()
@@ -47,3 +48,11 @@ def register_user(user : RegisterRequest, db : Session=Depends(get_db)):
 
     return {"success" : True, 'message' : '회원가입 성공!', 'user_id' : new_user.id}
 
+@app.post('/api/login')
+def login(user:UserCreate, db:Session=Depends(get_db)):
+    # 사용자 테이블에서 입력한 이름과 패스워드가 있는지 조회
+    found = db.query(User).filter(User.username == user.username, User.password == user.password)
+    if not found:
+        raise HTTPException(status_code=400, detail='로그인 실패.')
+    
+    return {"success" : True, 'message' : '로그인 성공!'}
