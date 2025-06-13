@@ -47,20 +47,24 @@ from fastapi import FastAPI, Request
 @app.post('/api/register')
 def register_user(user: RegisterRequest, db:Session=Depends(get_db)):
     # 같은 사용자가 있는지 조회
-    existing_user =  db.query(User).filter(User.username == user.username).first()
+    existing_user =  db.query(User).filter(User.username == user.username or User.email == user.email).first()
+    
     # 같은 사용자가 있으면  400에러로 응답
     if existing_user:
         raise HTTPException(status_code=400, detail="이미 존재하는 사용자입니다.")
+    
     # 새 유저에대한 객체(인스턴스) 생성성
     new_user =  User(
         username = user.username,
         email = user.email,
         password = user.password
     )
+
     # db commit하는 과정과 동일
     db.add(new_user)
     db.commit()
     db.refresh(new_user)  # DB에서 자동 생성된 id를 유저인스턴스에 할당
+
     return {"success":True,'message':'회원가입 성공', 'user_id':new_user.id}
 
 # 사용자정보 UserCreate 로 DB 조회회
@@ -69,11 +73,12 @@ def login(user:UserCreate, db:Session=Depends(get_db)):
     # 사용자 테이블에서 입력한 이름과 패스워드가 있는지 조회
     print(user)
     found =  db.query(User) \
-        .filter(User.username == user.username, User.password == user.password) \
+        .filter(User.username == user.username and User.password == user.password) \
         .first()
     
     if not found:
         raise HTTPException(status_code=400, detail="로그인 실패")
+    
     return {"success":True,'message':'로그인 성공'}
 
 # 사용자의 고유 id로 user테이블의 데이터 조회
@@ -92,6 +97,7 @@ def get_produc():
     products = db.query(Product).all()
     db.close()
     return products
+
 # 상품 등록
 @app.post('/api/products')
 def create_produc(product: ProductCreate):
@@ -102,6 +108,7 @@ def create_produc(product: ProductCreate):
     db.refresh(product)
     db.close()
     return {"success":True, "message":"상품 등록 완료",'product_id':product.id}    
+
 # 장바구니 담기
 @app.post('/api/cart')
 def add_to_cart(item: CartItem):
@@ -125,6 +132,7 @@ def get_cart(user_id: int = Query(...), db:Session=Depends(get_db)):
         }
      for item in items
     ]
+
 # 주문 요청(장바구니 상품 주문)
 @app.post('/api/order')
 def place_order(order: OrderRequest, db:Session=Depends(get_db)):
@@ -143,6 +151,7 @@ def place_order(order: OrderRequest, db:Session=Depends(get_db)):
         db.refresh(new_order)  # DB에서 새로 생성된 primary key 값을 new_order 의 id에 저장
     db.commit()
     return {"success":True, 'message':'주문이 완료 되었습니다'}
+
 #주문 목록 조회
 @app.get('/api/order', response_model=List[OrderOut])
 def get_orders(user_id:int = Query(...),db:Session=Depends(get_db)):
