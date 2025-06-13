@@ -25,8 +25,8 @@
                         <div class = 'product-item'>
                             <h3>${product.name}</h3>
                             <p>${product.price}원</p>
-                            <input type='number' value="1" min="1">
-                            <button data-product-id="${product.id}">장바구니 담기</button>
+                            <input class="quantity-input" type='number' value="1" min="1">
+                            <button class="add-to-cart" data-product-id="${product.id}">장바구니 담기</button>
                         </div>
                     `
                     productlist.append(productHtml)
@@ -36,6 +36,31 @@
                 $('#message').text('상품 목록을 가져오는 데 실패!')
             }
         })
-    })
+    });
+
+    // 장바구니 담기 : Cart 테이블에 insert
+    $(document).on('click', '.add-to-cart', function(){
+        const productid = $(this).data('product-id');
+        const quantity = $(this).siblings('.quantity-input').val();
+        const userid = 1;
+
+        $.ajax({
+            url : "http://localhost:8000/api/cart",
+            type : 'post',
+            contentType : 'application/json',
+            data : JSON.stringify({
+                user_id : userid,
+                product_id : productid,
+                quantity : parseInt(quantity)
+            }),
+            success : function(response){
+                $('#message').text(response.message)
+            },
+            error : function(e){
+                $('#message').text("장바구니 담기 실패!")
+            }
+        })
+    });
+
 </script>
 </html>
