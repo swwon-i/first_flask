@@ -5,8 +5,10 @@ from model import *
 from database import SessionLocal, engine
 from schemas import *
 from typing import List
-from fastapi import Query
 from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request, Query
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 # fastapi 생성
 app = FastAPI()
@@ -21,6 +23,12 @@ def get_db():
     finally:
         db.close()
 
+# 템플릿 디렉토리 설정
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request, "name": "FastAPI"})
 
 # 라우터 ( 요청에 응답하는 )
 @app.post('/api/register')
@@ -127,4 +135,4 @@ def get_orders(user_id: int = Query(...), db:Session=Depends(get_db)):
     return orders
 
 # 정적 HTML 파일 서빙
-app.mount("/", StaticFiles(directory="templates", html=True), name="static")
+# app.mount("/", StaticFiles(directory="templates", html=True), name="static")
